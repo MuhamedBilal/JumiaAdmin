@@ -6,7 +6,6 @@ export default function UserPage() {
   let user = {
     role: "",
     username: "",
-    password: "",
     email: "",
   };
 
@@ -74,17 +73,7 @@ Username :
                     placeholder="write your email"
                   />
 
-                  <label className="py-2" htmlFor="password">
-                    Password{" "}
-                  </label>
-                  <input
-                    onChange={myformik.handleChange}
-                    value={myformik.values.password}
-                    id="password"
-                    type="password"
-                    className="form-control my-1"
-                    placeholder="write your email"
-                  /> 
+             
 
 <label className="py-2" htmlFor="admin">
                     {" "}
