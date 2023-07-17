@@ -12,6 +12,9 @@ function Navigator() {
       <li>
         <Link to="/UserPage">UserPage</Link>
       </li>
+      <li>
+        <Link to="/Signin">Signin</Link>
+      </li>
     </ul>
   </nav>
   )

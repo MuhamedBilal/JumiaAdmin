@@ -1,176 +1,105 @@
-import React,{ useState } from 'react'
-import { Table, Button } from 'react-bootstrap';
-import styles from './allUsers.css'
-
-
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Pagination } from 'react-bootstrap';
+import axiosInstance from '../axios/axios';
 
 function AllUsers() {
-  const [users, setUsers] = useState([
-    { id: 1, username: 'JohnDoe', email: 'john@example.com' },
-    { id: 2, username: 'JaneDoe', email: 'jane@example.com' },
-    { id: 3, username: 'JimBrown', email: 'jim@example.com' },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [usersPerPage] = useState(15);
 
-  const handleDelete = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
+  useEffect(() => {
+    fetchUsers();
+  }, [currentPage]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/users?page=${currentPage}&limit=${usersPerPage}`
+      );
+      console.log(response.data);
+      if (Array.isArray(response.data.data)) {
+        setUsers(response.data.data);
+        setTotalUsers(response.data.totalUsers);
+      } else {
+        console.log('Error: response data is not an array');
+      }
+    } catch (error) {
+      // Handle error
+    }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axiosInstance.delete(`/users/${id}`);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  const handleAddUser = async () => {
+    try {
+      const newUser = { name: 'NewUser', email: 'newuser@example.com' };
+      const response = await axiosInstance.post('/users', newUser);
+      setUsers([...users, response.data]);
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  // Get current users
+  const currentUsers = users;
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-<Table striped bordered hover className="w-100">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {users.map((user) => (
-        <tr key={user.id}>
-          <td>{user.id}</td>
-          <td>{user.username}</td>
-          <td>{user.email}</td>
-          <td>
-            <Button variant="warning">Edit</Button>{' '}
-            <Button variant="danger" onClick={() => handleDelete(user.id)}>
-              Delete
-            </Button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </Table>
-  )
+    <div className="container">
+      <h1 className="text-center my-4">All Users</h1>
+      <Button variant="primary" onClick={handleAddUser}>
+        Add User
+      </Button>
+      <Table striped bordered hover className="w-100">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentUsers.map((user, index) => (
+            <tr key={user._id}>
+              <td>{(currentPage - 1) * usersPerPage + index + 1}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>
+                <Button variant="warning">Edit</Button>{' '}
+                <Button variant="danger" onClick={() => handleDelete(user._id)}>
+                  Delete
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      <Pagination>
+        {[...Array(Math.ceil(totalUsers / usersPerPage)).keys()].map(
+          (number) => (
+            <Pagination.Item
+              key={number + 1}
+              active={number + 1 === currentPage}
+              onClick={() => paginate(number + 1)}
+            >
+              {number + 1}
+            </Pagination.Item>
+          )
+        )}
+      </Pagination>
+    </div>
+  );
 }
 
-
-export default AllUsers
-
-// import {useEffect,useState} from 'react';
- 
-// const AllUsers = () => {
-   
-//   const[record,setRecord] = useState([])
-//   const [modeldata,setModeldata] = useState({
-//      id:'',
-//      userName:'',
-//      username:'',
-//      email:'',
-//      website:''
-//   })
- 
-//    const getData = () =>
-//    {
-//        fetch('https://jsonplaceholder.typicode.com/users/')
-//        .then(resposne=> resposne.json())
-//        .then(res=>setRecord(res))
-//    }
- 
-//    useEffect(() => {
-//       getData();
-//    },[])
-   
-//     const showDetail = (id) =>
-//     {
-      
-//       fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
-//       .then(resposne=> resposne.json())
-//       .then(res=>setModeldata(res))
-//     }
- 
- 
-//     return (
-//     <div class="container mt-2">
-//         <div class="row mt-2 ">
-//             <div class="col-lg-1 col-md-6 col-sm-12">
-//             </div>  
-//             <div class="col-lg-11 col-md-6 col-sm-12">
-//               <h5 class="mt-3 mb-3 text-secondary">
-//                Check More Records of Employees
-//               </h5>
-//                 <div class=" mt-5">
-//                     <table class="table table-striped table-sm">
-//                         <thead class="thead-light">
-//                             <tr>
-//                                 <th>No</th>
-//                                 <th>Name</th>
-//                                 <th>Username</th>
-//                                 <th>Email</th>
-//                                 <th>Website</th>
-//                                 <th>Show Details</th>
-//                             </tr>
-//                         </thead>
-//                         <tbody>
-                        
-//                           {record.map((names,index)=>
-//                            <tr key={index}>
-//                                <td>{names.id}</td>
-//                               <td>{names.name}</td>
-//                               <td>{names.username}</td>
-//                               <td>{names.email}</td>
-//                               <td>{names.website}</td>
-//                               <td><button class="btn btn-primary" onClick={(e)=>showDetail(names.id)} data-toggle="modal" data-target="#myModal">Get Details</button></td>
-//                            </tr>
-//                            )}
-//                         </tbody>
-//                     </table>
-//                 </div>
-//             </div>
-            
-//         </div>
- 
- 
-// {/* 
-//  Model Box  */}
- 
-//       <div class="modal" id="myModal">
-//         <div class="modal-dialog" style={{width:"700px"}}>
-//           <div class="modal-content">
-//             <div class="modal-header">
-//               <h4 class="modal-title">Row No : {modeldata.id}</h4>
-//               <button type="button" class="close" data-dismiss="modal">&times;</button>
-//             </div>
-             
-//             <div class="modal-body">
-//             <table class="table table-striped table-sm">
-//                         <thead class="thead-light">
-//                             <tr>
-//                                 <th>No</th>
-//                                 <th>Name</th>
-//                                 <th>Username</th>
-//                                 <th>Email</th>
-//                                 <th>Website</th>
-                               
-//                             </tr>
-//                         </thead>
-//                         <tbody>
-//                            <tr >
-//                               <td>{modeldata.id}</td>
-//                               <td>{modeldata.name}</td>
-//                               <td>{modeldata.username}</td>
-//                               <td>{modeldata.email}</td>
-//                               <td>{modeldata.website}</td>
-                               
-//                            </tr>
-                          
-//                         </tbody>
-//                     </table>
-//             </div>
-             
-             
-//             <div class="modal-footer">
-//               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-//             </div>
-             
-//           </div>
-//         </div>
-//       </div>
- 
-//     </div>
-//     )
-// }
- 
- 
-// export default AllUsers
+export default AllUsers;
