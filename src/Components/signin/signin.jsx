@@ -18,7 +18,7 @@ function Signin() {
       localStorage.setItem('token', token);
 
       // Redirect to the dashboard page
-      <Navigate to="/src/Components/allUsers"/>
+      <Navigate to="/AllUsers"/>
     } catch (error) {
       console.error(error);
     }

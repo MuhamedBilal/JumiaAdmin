@@ -1,27 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./userPage.css";
-import { Formik, useFormik } from "formik";
+import { Formik } from "formik";
+import { useParams } from 'react-router-dom';
+import axiosInstance from '../axios/axios';
 
 export default function UserPage() {
-  let user = {
-    role: "",
-    username: "",
+  const params = useParams();
+  const id = params.id;
+
+  const [user, setUser] = useState({
+    name: "",
     email: "",
+  });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get(`/users/${id}`);
+        setUser(response.data.data);
+        console.log(response.data.data)
+      } catch (error) {
+        // Handle error
+      }
+    };
+    fetchUserData();
+  }, [id]);
+
+  const handleSubmit = async (values) => {
+    try {
+      await axiosInstance.put(`/users/${id}`, values);
+      console.log(values); // log the updated form values
+      // Handle successful update
+    } catch (error) {
+      // Handle error
+    }
   };
 
-  let myformik = useFormik({
-    initialValues: user,
-    onSubmit: function (values) {
-      console.log(values);
-    },
-  });
   return (
     <>
       <div>
         <div className="container">
           <div>
-            <h1 className="text-center pt-5"> ismail salah</h1>
-            <h5 className="text-center text-success">role</h5>
+            <h1 className="text-center pt-5"> {user.name}</h1>
+            {/* <h5 className="text-center text-success">role</h5> */}
           </div>
 
           <div className="container">
@@ -29,69 +50,36 @@ export default function UserPage() {
             <hr />
 
             <div className="row">
-              {/* <div className="col-sm-3">
-<h4 className='text-success py-3'>
-role :
-</h4>
-<h4 className='text-success py-3'>
-Username :
-</h4>
-<h4 className='text-success py-3'>
-  Email :
-</h4>
-<h4 className='text-success py-3'>
-  Password :
-</h4>
-
-</div> */}
               <div className="col-sm-12 ">
-                <form onSubmit={myformik.handleSubmit}>
-                  
-                  <label className="py-2" htmlFor="username">
-                    {" "}
-                    username{" "}
-                  </label>
+                <Formik initialValues={user} onSubmit={handleSubmit}>
+                  {(myformik) => (
+                    <form onSubmit={myformik.handleSubmit}>
+                      <label className="py-2" htmlFor="name">username</label>
+                      <input
+                        onChange={myformik.handleChange}
+                        value={myformik.values.name}
+                        id="name"
+                        type="name"
+                        className="form-control my-1"
+                        placeholder="write username"
+                      />
 
-                  <input
-                    onChange={myformik.handleChange}
-                    value={myformik.values.username}
-                    id="username"
-                    type="username"
-                    className="form-control my-1"
-                    placeholder="write username"
-                  />
+                      <label className="py-2" htmlFor="email">email</label>
+                      <input
+                        onChange={myformik.handleChange}
+                        value={myformik.values.email}
+                        id="email"
+                        type="email"
+                        className="form-control my-1"
+                        placeholder="write your email"
+                      />
 
-                  <label className="py-2" htmlFor="email">
-                    email{" "}
-                  </label>
-                  <input
-                    onChange={myformik.handleChange}
-                    value={myformik.values.email}
-                    id="email"
-                    type="email"
-                    className="form-control my-1"
-                    placeholder="write your email"
-                  />
-
-             
-
-<label className="py-2" htmlFor="admin">
-                    {" "}
-                    role{" "}
-                  </label>
-                  <input
-                    onChange={myformik.handleChange}
-                    value={myformik.values.role}
-                    id="role"
-                    type="role"
-                    className="form-control my-1"
-                    placeholder="write your role"
-                  />
-
-                  <button type="submit" className=" btn btn-success my-2">
-                    submit
-                  </button>
-                </form>
+                      <button type="submit" className=" btn btn-success my-2">
+                        submit
+                      </button>
+                    </form>
+                  )}
+                </Formik>
               </div>
             </div>
           </div>

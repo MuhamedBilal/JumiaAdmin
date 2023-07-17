@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Pagination } from 'react-bootstrap';
 import axiosInstance from '../axios/axios';
+import { useNavigate } from 'react-router-dom';
 
 function AllUsers() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
   const [usersPerPage] = useState(15);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -29,6 +31,12 @@ function AllUsers() {
     }
   };
 
+  const handleEdit = (id) => {
+    // console.log(user)
+    navigate(`/UserPage/${id}`);
+    // <Link to={`/UserPage/${id}`}>Edit User</Link>
+  };
+  
   const handleDelete = async (id) => {
     try {
       await axiosInstance.delete(`/users/${id}`);
@@ -76,7 +84,7 @@ function AllUsers() {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>
-                <Button variant="warning">Edit</Button>{' '}
+                <Button variant="warning" onClick={() => handleEdit(user._id)}>Edit</Button>{' '}
                 <Button variant="danger" onClick={() => handleDelete(user._id)}>
                   Delete
                 </Button>

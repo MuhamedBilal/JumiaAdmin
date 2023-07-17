@@ -10,7 +10,7 @@ function RouterApp() {
     <Router>
                <Routes>
             <Route path="/allUsers" element={<AllUsers/>} />
-            <Route path="/userPage" element={<UserPage/>} />
+            <Route path="/userPage/:id" element={<UserPage/>} />
             <Route path="/signin" element={<Signin/>} />
             <Route path="/" element={<Navigator/>} />
               </Routes>
