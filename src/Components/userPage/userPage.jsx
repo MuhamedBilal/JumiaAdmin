@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styles from "./userPage.css";
-import { Formik } from "formik";
+import { Formik, Field, ErrorMessage } from "formik";
 import { useParams } from 'react-router-dom';
+import * as Yup from 'yup';
 import axiosInstance from '../axios/axios';
 
 export default function UserPage() {
   const params = useParams();
   const id = params.id;
 
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-  });
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await axiosInstance.get(`/users/${id}`);
         setUser(response.data.data);
-        console.log(response.data.data)
       } catch (error) {
         // Handle error
       }
@@ -26,10 +23,23 @@ export default function UserPage() {
     fetchUserData();
   }, [id]);
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+        .min(8, 'Name must be at least 8 characters')
+        .required('Name is required'),
+    email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is required'),
+});
+
+
   const handleSubmit = async (values) => {
     try {
       await axiosInstance.put(`/users/${id}`, values);
       console.log(values); // log the updated form values
+      const updatedUser = { ...user, ...values };
+      setUser(updatedUser);
+      console.log(updatedUser); // log the updated user object
       // Handle successful update
     } catch (error) {
       // Handle error
@@ -41,45 +51,50 @@ export default function UserPage() {
       <div>
         <div className="container">
           <div>
-            <h1 className="text-center pt-5"> {user.name}</h1>
+            <h1 className="text-center pt-5"> {user && user.name}</h1>
+            <h5 className="text-center mt-1"> {user && user.role}</h5>
             {/* <h5 className="text-center text-success">role</h5> */}
           </div>
 
           <div className="container">
-            <h2>account</h2>
+            {/* <h2>account</h2> */}
             <hr />
 
             <div className="row">
               <div className="col-sm-12 ">
-                <Formik initialValues={user} onSubmit={handleSubmit}>
-                  {(myformik) => (
-                    <form onSubmit={myformik.handleSubmit}>
-                      <label className="py-2" htmlFor="name">username</label>
-                      <input
-                        onChange={myformik.handleChange}
-                        value={myformik.values.name}
-                        id="name"
-                        type="name"
-                        className="form-control my-1"
-                        placeholder="write username"
-                      />
+                {user && (
+                  <Formik initialValues={{ name: user.name, email: user.email }} onSubmit={handleSubmit} validationSchema={validationSchema} enableReinitialize={true}>
+                    {(myformik) => (
+                      <form onSubmit={myformik.handleSubmit}>
+                        <div className="form-group">
+                          <label className="py-2" htmlFor="name">Username</label>
+                          <Field
+                            name="name"
+                            type="text"
+                            className="form-control my-1"
+                            placeholder="Username"
+                          />
+                          <ErrorMessage name="name" component="div" className="text-danger" />
+                        </div>
 
-                      <label className="py-2" htmlFor="email">email</label>
-                      <input
-                        onChange={myformik.handleChange}
-                        value={myformik.values.email}
-                        id="email"
-                        type="email"
-                        className="form-control my-1"
-                        placeholder="write your email"
-                      />
+                        <div className="form-group">
+                          <label className="py-2" htmlFor="email">Email</label>
+                          <Field
+                            name="email"
+                            type="email"
+                            className="form-control my-1"
+                            placeholder="Email"
+                          />
+                          <ErrorMessage name="email" component="div" className="text-danger" />
+                        </div>
 
-                      <button type="submit" className=" btn btn-success my-2">
-                        submit
-                      </button>
-                    </form>
-                  )}
-                </Formik>
+                        <button type="submit" className=" btn btn-success my-2">
+                          submit
+                        </button>
+                      </form>
+                    )}
+                  </Formik>
+                )}
               </div>
             </div>
           </div>
