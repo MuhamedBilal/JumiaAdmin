@@ -5,6 +5,8 @@ import AllUsers from '../allUsers/allUsers'
 import UserPage from '../userPage/userPage'
 import Navigator from '../Navigator/Navigator';
 import Signin from '../signin/signin'
+import CreateUser from '../createUser/createUser'
+
 function RouterApp() {
   return (
     <Router>
@@ -13,6 +15,7 @@ function RouterApp() {
             <Route path="/userPage/:id" element={<UserPage/>} />
             <Route path="/signin" element={<Signin/>} />
             <Route path="/" element={<Navigator/>} />
+            <Route path="/createUser" element={<CreateUser/>} />
               </Routes>
          </Router>
   )

@@ -47,13 +47,14 @@ function AllUsers() {
   };
 
   const handleAddUser = async () => {
-    try {
-      const newUser = { name: 'NewUser', email: 'newuser@example.com' };
-      const response = await axiosInstance.post('/users', newUser);
-      setUsers([...users, response.data]);
-    } catch (error) {
-      // Handle error
-    }
+    // try {
+    //   const newUser = { name: 'NewUser', email: 'newuser@example.com' };
+    //   const response = await axiosInstance.post('/users', newUser);
+    //   setUsers([...users, response.data]);
+    // } catch (error) {
+    //   // Handle error
+    // }
+    navigate(`/CreateUser`)
   };
 
   // Get current users
