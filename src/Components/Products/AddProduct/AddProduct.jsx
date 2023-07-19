@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 // import styles from "./userPage.css";
 import { Button } from "react-bootstrap";
@@ -21,35 +22,10 @@ export default function AddProduct() {
     seller: "",
   });
 
-  //   const validationSchema = Yup.object().shape({
-  //     name: Yup.string()
-  //       .min(8, 'Name must be at least 8 characters')
-  //       .required('Name is required'),
-  //     email: Yup.string()
-  //       .email('Invalid email address')
-  //       .required('Email is required'),
-  //     password: Yup.string()
-  //       .matches(
-  //         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-  //         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-  //       )
-  //       .required('Password is required'),
-  //       passwordConfirm: Yup.string()
-  //       .oneOf([Yup.ref('password'), null], 'Passwords must match')
-  //       .required('Confirm Password is required'),
-  //   });
-
-
-
-//   admin1@gmail.com
-//   admin@123
-//https://jumia-clone-api-9qqm.onrender.com/api/team2/products
-
-
 
   const handleSubmit = async (values) => {
     try {
-      await axiosInstance.post(`/users`, values);
+      await axiosInstance.post(`/products`, values);
       console.log(values); // log the updated form values
       const User = { ...user, ...values };
       setUser(User);
@@ -77,7 +53,7 @@ export default function AddProduct() {
                   <Formik
                     initialValues={user}
                     onSubmit={handleSubmit}
-                    validationSchema={validationSchema}
+                    // validationSchema={validationSchema}
                     enableReinitialize={true}
                   >
                     {(myformik) => (
@@ -213,3 +189,21 @@ export default function AddProduct() {
     </>
   );
 }
+
+  //   const validationSchema = Yup.object().shape({
+  //     name: Yup.string()
+  //       .min(8, 'Name must be at least 8 characters')
+  //       .required('Name is required'),
+  //     email: Yup.string()
+  //       .email('Invalid email address')
+  //       .required('Email is required'),
+  //     password: Yup.string()
+  //       .matches(
+  //         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+  //         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+  //       )
+  //       .required('Password is required'),
+  //       passwordConfirm: Yup.string()
+  //       .oneOf([Yup.ref('password'), null], 'Passwords must match')
+  //       .required('Confirm Password is required'),
+  //   });

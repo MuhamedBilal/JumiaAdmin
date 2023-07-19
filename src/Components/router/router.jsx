@@ -6,6 +6,7 @@ import UserPage from "../Users/userPage/userPage";
 import Navigator from "../Navigator/Navigator";
 import Signin from "../signin/signin";
 import CreateUser from "../Users/createUser/createUser";
+import AddProduct from "../Products/AddProduct/AddProduct"
 
 function RouterApp() {
   return (
@@ -16,6 +17,7 @@ function RouterApp() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/" element={<Navigator />} />
         <Route path="/createUser" element={<CreateUser />} />
+        <Route path="/addProduct" element={<AddProduct />} />
       </Routes>
     </Router>
   );
