@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 // import styles from "./userPage.css";
+import { Button} from 'react-bootstrap';
+
 import { Formik, Field, ErrorMessage } from "formik";
 // import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import axiosInstance from '../axios/axios';
+import axiosInstance from "../../axios/axios";
+
+
 
 function CreateUser() {
-  // const params = useParams();
-  // const id = params.id;
-
   const [user, setUser] = useState( 
     {
       name:"",
@@ -111,9 +112,9 @@ function CreateUser() {
                           <ErrorMessage name="passwordConfirm" component="div" className="text-danger" />
                         </div>
 
-                        <button type="submit" className=" btn btn-success my-2">
-                          submit
-                        </button>
+                        <Button  variant="primary" type="submit" className=" btn mt-3 my-2">
+                          Submit
+                        </Button>
                       </form>
                     )}
                   </Formik>

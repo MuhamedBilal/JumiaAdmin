@@ -9,10 +9,7 @@ function Navigator() {
           <li>
         <Link to="/AllUsers">AllUsers</Link>
       </li>
-      <li>
-        <Link to="/UserPage">UserPage</Link>
-      </li>
-      <li>
+        <li>
         <Link to="/Signin">Signin</Link>
       </li>
     </ul>

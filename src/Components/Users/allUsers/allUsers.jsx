@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Pagination } from 'react-bootstrap';
-import axiosInstance from '../axios/axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Table, Button, Pagination } from "react-bootstrap";
+import axiosInstance from "../../axios/axios";
+
+import { useNavigate } from "react-router-dom";
 
 function AllUsers() {
   const [users, setUsers] = useState([]);
@@ -24,7 +25,7 @@ function AllUsers() {
         setUsers(response.data.data);
         setTotalUsers(response.data.totalUsers);
       } else {
-        console.log('Error: response data is not an array');
+        console.log("Error: response data is not an array");
       }
     } catch (error) {
       // Handle error
@@ -36,7 +37,7 @@ function AllUsers() {
     navigate(`/UserPage/${id}`);
     // <Link to={`/UserPage/${id}`}>Edit User</Link>
   };
-  
+
   const handleDelete = async (id) => {
     try {
       await axiosInstance.delete(`/users/${id}`);
@@ -47,14 +48,7 @@ function AllUsers() {
   };
 
   const handleAddUser = async () => {
-    // try {
-    //   const newUser = { name: 'NewUser', email: 'newuser@example.com' };
-    //   const response = await axiosInstance.post('/users', newUser);
-    //   setUsers([...users, response.data]);
-    // } catch (error) {
-    //   // Handle error
-    // }
-    navigate(`/CreateUser`)
+    navigate(`/CreateUser`);
   };
 
   // Get current users
@@ -85,7 +79,9 @@ function AllUsers() {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>
-                <Button variant="warning" onClick={() => handleEdit(user._id)}>Edit</Button>{' '}
+                <Button variant="warning" onClick={() => handleEdit(user._id)}>
+                  Edit
+                </Button>{" "}
                 <Button variant="danger" onClick={() => handleDelete(user._id)}>
                   Delete
                 </Button>

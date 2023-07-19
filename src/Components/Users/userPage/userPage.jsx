@@ -3,7 +3,8 @@ import styles from "./userPage.css";
 import { Formik, Field, ErrorMessage } from "formik";
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
-import axiosInstance from '../axios/axios';
+import axiosInstance from "../../axios/axios";
+
 
 export default function UserPage() {
   const params = useParams();
