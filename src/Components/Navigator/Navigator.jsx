@@ -6,12 +6,16 @@ function Navigator() {
   return (
     <nav>
     <ul>
+    <li>
+        <Link to="/Signin">Signin</Link>
+      </li>
           <li>
         <Link to="/AllUsers">AllUsers</Link>
       </li>
-        <li>
-        <Link to="/Signin">Signin</Link>
+      <li>
+        <Link to="/productsList">productsList</Link>
       </li>
+   
     </ul>
   </nav>
   )

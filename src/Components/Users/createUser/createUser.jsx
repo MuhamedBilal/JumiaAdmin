@@ -6,10 +6,13 @@ import { Formik, Field, ErrorMessage } from "formik";
 // import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import axiosInstance from "../../axios/axios";
+import { useNavigate } from "react-router-dom";
+
 
 
 
 function CreateUser() {
+  const navigate = useNavigate();
   const [user, setUser] = useState( 
     {
       name:"",
@@ -46,6 +49,7 @@ function CreateUser() {
       const User = { ...user, ...values };
       setUser(User);
       console.log(User); // log the updated user object
+      navigate(`/allUsers`);
       // Handle successful update
     } catch (error) {
       // Handle error

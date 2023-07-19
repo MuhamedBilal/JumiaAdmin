@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "./userPage.css";
 import { Formik, Field, ErrorMessage } from "formik";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import axiosInstance from "../../axios/axios";
 
-
 export default function UserPage() {
+  const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
 
@@ -41,6 +41,7 @@ export default function UserPage() {
       const updatedUser = { ...user, ...values };
       setUser(updatedUser);
       console.log(updatedUser); // log the updated user object
+      navigate(`/allUsers`);
       // Handle successful update
     } catch (error) {
       // Handle error

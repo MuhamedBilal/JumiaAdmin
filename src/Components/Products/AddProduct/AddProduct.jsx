@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 // import styles from "./userPage.css";
 import { Button } from "react-bootstrap";
@@ -9,7 +8,7 @@ import * as Yup from "yup";
 import axiosInstance from "../../axios/axios";
 
 export default function AddProduct() {
-  const [user, setUser] = useState({
+  const [product, setProduct] = useState({
     name: "",
     description: "",
     quantity: "",
@@ -27,9 +26,9 @@ export default function AddProduct() {
     try {
       await axiosInstance.post(`/products`, values);
       console.log(values); // log the updated form values
-      const User = { ...user, ...values };
-      setUser(User);
-      console.log(User); // log the updated user object
+      const Product = { ...product, ...values };
+      setProduct(Product);
+      console.log(Product); // log the updated user object
       // Handle successful update
     } catch (error) {
       // Handle error
@@ -41,7 +40,7 @@ export default function AddProduct() {
       <div>
         <div className="container">
           <div>
-            <h1 className="text-center pt-5"> Create User</h1>
+            <h1 className="text-center pt-5"> Create Product</h1>
           </div>
 
           <div className="container">
@@ -49,9 +48,9 @@ export default function AddProduct() {
 
             <div className="row">
               <div className="col-sm-12 ">
-                {user && (
+                {product && (
                   <Formik
-                    initialValues={user}
+                    initialValues={product}
                     onSubmit={handleSubmit}
                     // validationSchema={validationSchema}
                     enableReinitialize={true}
@@ -59,7 +58,7 @@ export default function AddProduct() {
                     {(myformik) => (
                       <form onSubmit={myformik.handleSubmit}>
                         <label className="py-2" htmlFor="name">
-                          productName
+                        Product name
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -67,11 +66,11 @@ export default function AddProduct() {
                           id="name"
                           type="name"
                           className="form-control my-1"
-                          placeholder="write username"
+                          placeholder="Product name"
                         />
 
                         <label className="py-2" htmlFor="description">
-                          description
+                        Description
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -79,10 +78,10 @@ export default function AddProduct() {
                           id="description"
                           type="description"
                           className="form-control my-1"
-                          placeholder="write description"
+                          placeholder="Description"
                         />
                         <label className="py-2" htmlFor="quantity">
-                          quantity
+                        Quantity
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -90,11 +89,11 @@ export default function AddProduct() {
                           id="quantity"
                           type="quantity"
                           className="form-control my-1"
-                          placeholder="write quantity"
+                          placeholder="Quantity"
                         />
 
                         <label className="py-2" htmlFor="price">
-                          price
+                        Price
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -102,10 +101,10 @@ export default function AddProduct() {
                           id="price"
                           type="price"
                           className="form-control my-1"
-                          placeholder="write price"
+                          placeholder="Price"
                         />
                         <label className="py-2" htmlFor="priceAfterDiscount">
-                          priceAfterDiscount
+                        Price After Discount
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -113,11 +112,11 @@ export default function AddProduct() {
                           id="priceAfterDiscount"
                           type="priceAfterDiscount"
                           className="form-control my-1"
-                          placeholder="write priceAfterDiscount"
+                          placeholder="Price After Discount"
                         />
 
                         <label className="py-2" htmlFor="sold">
-                          sold
+                        Sold
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -125,10 +124,10 @@ export default function AddProduct() {
                           id="sold"
                           type="sold"
                           className="form-control my-1"
-                          placeholder="write how much sold "
+                          placeholder="Sold "
                         />
                         <label className="py-2" htmlFor="category">
-                          category
+                        Category
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -136,11 +135,11 @@ export default function AddProduct() {
                           id="category"
                           type="category"
                           className="form-control my-1"
-                          placeholder="write category"
+                          placeholder="Category"
                         />
 
                         <label className="py-2" htmlFor="subcategory">
-                          subcategory
+                        Subcategory
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -148,10 +147,10 @@ export default function AddProduct() {
                           id="subcategory"
                           type="subcategory"
                           className="form-control my-1"
-                          placeholder="write  subcategory"
+                          placeholder="Subcategory"
                         />
                         <label className="py-2" htmlFor="brand">
-                          brand
+                        Brand
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -159,11 +158,11 @@ export default function AddProduct() {
                           id="brand"
                           type="brand"
                           className="form-control my-1"
-                          placeholder="write brand name"
+                          placeholder="Brand"
                         />
 
                         <label className="py-2" htmlFor="seller">
-                          seller
+                        Seller
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -171,11 +170,11 @@ export default function AddProduct() {
                           id="seller"
                           type="seller"
                           className="form-control my-1"
-                          placeholder="write seller"
+                          placeholder="Seller"
                         />
 
-                        <button type="submit" className=" btn btn-success my-2">
-                          submit
+                        <button type="submit" className=" btn btn-primary my-2">
+                         Submit
                         </button>
                       </form>
                     )}

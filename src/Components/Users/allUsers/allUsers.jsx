@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Pagination } from "react-bootstrap";
 import axiosInstance from "../../axios/axios";
-
 import { useNavigate } from "react-router-dom";
 
 function AllUsers() {
