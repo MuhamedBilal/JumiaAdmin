@@ -95,9 +95,14 @@ function ProductsList() {
           <Button variant="warning" onClick={() => handleEdit(product._id)}>
             Edit
           </Button>{" "}
-          <Button variant="danger" onClick={() => handleDelete(product._id)}>
-            Delete
-          </Button>
+          <Button variant="danger" onClick={() => {
+  const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+  if (confirmDelete) {
+    handleDelete(product._id);
+  }
+}}>
+  Delete
+</Button>
         </td>
       </tr>
     ))}
