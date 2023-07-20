@@ -36,6 +36,7 @@ const ConfirmDeleteModal = ({ id, handleDelete, product }) => {
     </>
   );
 };
+
 function ProductsList() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,31 +52,23 @@ function ProductsList() {
 
   const fetchUsers = async () => {
     try {
-      
+
       const response = await axiosInstance.get(
-        
-        `/products?page=${currentPage}&limit=${usersPerPage}`
-        // `/users?page=${currentPage}&limit=${usersPerPage}`
-      
+       `/products?page=${currentPage}&limit=${usersPerPage}`
         );
-        setTotalUsers(response.data.Products.length);
-      console.log(response.data);
-      if (Array.isArray(response.data.Products)) {
         setUsers(response.data.Products);
-        // setTotalUsers(response.data.Products.length);
-      }
-      //  else {
-      //   console.log("Error: response data is not an array");
-      // }
+        setTotalUsers(response.data.totalProducts);
+      console.log(response.data);
+
     } catch (error) {
       // Handle error
     }
   };
 
   const handleEdit = (id) => {
-    // console.log(user)
+  
     navigate(`/editProduct/${id}`);
-    // <Link to={`/UserPage/${id}`}>Edit User</Link>
+  
   };
 
   const handleDelete = async (id) => {
@@ -101,7 +94,7 @@ function ProductsList() {
     <div className="container">
       <h1 className="text-center my-4">All Products</h1>
       <Button variant="primary" onClick={handleAddUser}>
-      Products list
+      Add product
       </Button>
       <Table striped bordered hover className="w-100">
   <thead>

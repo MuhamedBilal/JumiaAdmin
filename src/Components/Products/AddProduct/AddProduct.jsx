@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 // import styles from "./userPage.css";
 import { Button } from "react-bootstrap";
-
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, Field, ErrorMessage, FieldArray } from "formik";
 // import { useParams } from 'react-router-dom';
 import * as Yup from "yup";
 import axiosInstance from "../../axios/axios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function AddProduct() {
   const [product, setProduct] = useState({
@@ -14,13 +15,52 @@ export default function AddProduct() {
     quantity: "",
     price: "",
     priceAfterDiscount: "",
-    sold: "",
+    sold: "0",
+    images: [""],
     category: "",
     subcategory: "",
     brand: "",
     seller: "",
   });
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const navigate = useNavigate();
 
+
+  useEffect(() => {
+    getCategory();
+    getSubCategory();
+    getBrands();
+  }, []);
+
+  const getCategory = async () => {
+    try {
+      const response = await axiosInstance.get(`/categories`);
+      setCategories(response.data.data);
+      console.log(response);
+    } catch (error) {
+      // Handle error
+    }
+  };
+  const getSubCategory = async () => {
+    try {
+      const response = await axiosInstance.get(`/subcategories`);
+      setSubCategories(response.data);
+      console.log(response);
+    } catch (error) {
+      // Handle error
+    }
+  };
+  const getBrands = async () => {
+    try {
+      const response = await axiosInstance.get(`/brands`);
+      setBrands(response.data.data);
+      console.log(response);
+    } catch (error) {
+      // Handle error
+    }
+  };
 
   const handleSubmit = async (values) => {
     try {
@@ -29,6 +69,8 @@ export default function AddProduct() {
       const Product = { ...product, ...values };
       setProduct(Product);
       console.log(Product); // log the updated user object
+      navigate(`/productslist`);
+      
       // Handle successful update
     } catch (error) {
       // Handle error
@@ -58,7 +100,7 @@ export default function AddProduct() {
                     {(myformik) => (
                       <form onSubmit={myformik.handleSubmit}>
                         <label className="py-2" htmlFor="name">
-                        Product name
+                          Product name
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -70,7 +112,7 @@ export default function AddProduct() {
                         />
 
                         <label className="py-2" htmlFor="description">
-                        Description
+                          Description
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -81,7 +123,7 @@ export default function AddProduct() {
                           placeholder="Description"
                         />
                         <label className="py-2" htmlFor="quantity">
-                        Quantity
+                          Quantity
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -93,7 +135,7 @@ export default function AddProduct() {
                         />
 
                         <label className="py-2" htmlFor="price">
-                        Price
+                          Price
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -104,7 +146,7 @@ export default function AddProduct() {
                           placeholder="Price"
                         />
                         <label className="py-2" htmlFor="priceAfterDiscount">
-                        Price After Discount
+                          Price After Discount
                         </label>
                         <input
                           onChange={myformik.handleChange}
@@ -115,66 +157,62 @@ export default function AddProduct() {
                           placeholder="Price After Discount"
                         />
 
-                        <label className="py-2" htmlFor="sold">
-                        Sold
-                        </label>
-                        <input
-                          onChange={myformik.handleChange}
-                          value={myformik.values.sold}
-                          id="sold"
-                          type="sold"
-                          className="form-control my-1"
-                          placeholder="Sold "
-                        />
                         <label className="py-2" htmlFor="category">
-                        Category
+                          Category
                         </label>
-                        <input
+                        <select
                           onChange={myformik.handleChange}
                           value={myformik.values.category}
                           id="category"
-                          type="category"
                           className="form-control my-1"
-                          placeholder="Category"
-                        />
+                        >
+                          <option value="">Select a category</option>
+                          {categories.map((category) => (
+                            <option key={category._id} value={category._id}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
 
                         <label className="py-2" htmlFor="subcategory">
-                        Subcategory
+                          Subcategory
                         </label>
-                        <input
+                        <select
                           onChange={myformik.handleChange}
                           value={myformik.values.subcategory}
                           id="subcategory"
                           type="subcategory"
                           className="form-control my-1"
-                          placeholder="Subcategory"
-                        />
+                          > 
+                            <option value="">Select a subcategoty</option>
+                          {subCategories.map((subcategory) => (
+                            <option key={subcategory._id} value={subcategory._id}>
+                              {subcategory.name}
+                            </option>
+                          ))}
+                          </select>
                         <label className="py-2" htmlFor="brand">
-                        Brand
+                          Brand
                         </label>
-                        <input
+                        <select
                           onChange={myformik.handleChange}
                           value={myformik.values.brand}
                           id="brand"
                           type="brand"
                           className="form-control my-1"
                           placeholder="Brand"
-                        />
+                        >
+                            <option value="">Select a subcategoty</option>
+                          {brands.map((brand) => (
+                            <option key={brand._id} value={brand._id}>
+                              {brand.name}
+                            </option>
+                          ))}
 
-                        <label className="py-2" htmlFor="seller">
-                        Seller
-                        </label>
-                        <input
-                          onChange={myformik.handleChange}
-                          value={myformik.values.seller}
-                          id="seller"
-                          type="seller"
-                          className="form-control my-1"
-                          placeholder="Seller"
-                        />
+                            </select>
 
                         <button type="submit" className=" btn btn-primary my-2">
-                         Submit
+                          Submit
                         </button>
                       </form>
                     )}
@@ -189,20 +227,63 @@ export default function AddProduct() {
   );
 }
 
-  //   const validationSchema = Yup.object().shape({
-  //     name: Yup.string()
-  //       .min(8, 'Name must be at least 8 characters')
-  //       .required('Name is required'),
-  //     email: Yup.string()
-  //       .email('Invalid email address')
-  //       .required('Email is required'),
-  //     password: Yup.string()
-  //       .matches(
-  //         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-  //         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-  //       )
-  //       .required('Password is required'),
-  //       passwordConfirm: Yup.string()
-  //       .oneOf([Yup.ref('password'), null], 'Passwords must match')
-  //       .required('Confirm Password is required'),
-  //   });
+//   const validationSchema = Yup.object().shape({
+//     name: Yup.string()
+//       .min(8, 'Name must be at least 8 characters')
+//       .required('Name is required'),
+//     email: Yup.string()
+//       .email('Invalid email address')
+//       .required('Email is required'),
+//     password: Yup.string()
+//       .matches(
+//         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+//         'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+//       )
+//       .required('Password is required'),
+//       passwordConfirm: Yup.string()
+//       .oneOf([Yup.ref('password'), null], 'Passwords must match')
+//       .required('Confirm Password is required'),
+//   });
+
+{
+  /* <label htmlFor="images">Product images</label>
+                    <FieldArray name="images">
+                      {(filedArrayProps) => {
+                        const { push, form } = filedArrayProps;
+                        const { values } = form;
+                        const { images } = values;
+                        return (
+                          <div>
+                            {images.map((item, index) => {
+                              return (
+                                <div className="form-control" key={index}>
+                                  <Field name={`images[${index}]`} />
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={() => push("")}
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      }}
+                    </FieldArray> */
+}
+
+{
+  /* <label className="py-2" htmlFor="sold">
+                        Sold
+                        </label>
+                        <input
+                          onChange={myformik.handleChange}
+                          value={myformik.values.sold}
+                          id="sold"
+                          type="sold"
+                          className="form-control my-1"
+                          placeholder="Sold "
+                        /> */
+}
