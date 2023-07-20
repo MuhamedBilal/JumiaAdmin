@@ -1,7 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button, Pagination } from "react-bootstrap";
-import axiosInstance from "../../axios/axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Pagination } from 'react-bootstrap';
+import axiosInstance from '../../axios/axios';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+const ConfirmDeleteModal = ({ id, handleDelete, user }) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <Button variant="danger" onClick={handleShow}>
+        Delete
+      </Button>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this user <b>{user.name}</b>? This will delete this user permanently. You cannot undo this action.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={() => { handleDelete(id); handleClose(); }}>
+  Delete
+</Button>
+
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
 
 function AllUsers() {
   const [users, setUsers] = useState([]);
@@ -24,7 +58,7 @@ function AllUsers() {
         setUsers(response.data.data);
         setTotalUsers(response.data.totalUsers);
       } else {
-        console.log("Error: response data is not an array");
+        console.log('Error: response data is not an array');
       }
     } catch (error) {
       // Handle error
@@ -32,15 +66,16 @@ function AllUsers() {
   };
 
   const handleEdit = (id) => {
-    // console.log(user)
     navigate(`/UserPage/${id}`);
-    // <Link to={`/UserPage/${id}`}>Edit User</Link>
   };
 
   const handleDelete = async (id) => {
     try {
       await axiosInstance.delete(`/users/${id}`);
-      setUsers(users.filter((user) => user.id !== id));
+      // setUsers(users.filter((user) => user.id !== id));
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
+      console.log(users);
+      toast.success('User deleted successfully!');
     } catch (error) {
       // Handle error
     }
@@ -80,10 +115,8 @@ function AllUsers() {
               <td>
                 <Button variant="warning" onClick={() => handleEdit(user._id)}>
                   Edit
-                </Button>{" "}
-                <Button variant="danger" onClick={() => handleDelete(user._id)}>
-                  Delete
-                </Button>
+                </Button>{' '}
+                <ConfirmDeleteModal id={user._id} handleDelete={handleDelete} user={user} />
               </td>
             </tr>
           ))}

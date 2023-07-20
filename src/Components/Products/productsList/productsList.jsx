@@ -3,7 +3,39 @@ import React, { useState, useEffect }  from 'react'
 import { Table, Button, Pagination } from "react-bootstrap";
 import axiosInstance from "../../axios/axios";
 import { useNavigate } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+const ConfirmDeleteModal = ({ id, handleDelete, product }) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <Button variant="danger" onClick={handleShow}>
+        Delete
+      </Button>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this product <b>{product.name}</b>? This will delete this product permanently. You cannot undo this action.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={() => { handleDelete(id); handleClose(); }}>
+  Delete
+</Button>
+
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
 function ProductsList() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,8 +80,9 @@ function ProductsList() {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/products/${id}`);
-      setUsers(users.filter((user) => user.id !== id));
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
+      console.log(users);
+      toast.success('User deleted successfully!');
     } catch (error) {
       // Handle error
     }
@@ -95,9 +128,7 @@ function ProductsList() {
           <Button variant="warning" onClick={() => handleEdit(product._id)}>
             Edit
           </Button>{" "}
-          <Button variant="danger" onClick={() => handleDelete(product._id)}>
-            Delete
-          </Button>
+          <ConfirmDeleteModal id={product.id} handleDelete={handleDelete} product={product} />
         </td>
       </tr>
     ))}
