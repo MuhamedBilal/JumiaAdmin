@@ -1,27 +1,24 @@
-import React from 'react'
-// import styles from 'Navigator.css'
-import { Link } from 'react-router-dom';
+
+import React from 'react';
+import { Navbar, Nav } from 'react-bootstrap';
 
 function Navigator() {
   return (
-    <nav>
-    <ul>
-    <li>
-        <Link to="/Signin">Signin</Link>
-      </li>
-          <li>
-        <Link to="/AllUsers">AllUsers</Link>
-      </li>
-      <li>
-        <Link to="/productsList">productsList</Link>
-      </li>
-      <li>
-        <Link to="/ordersList">ordersList</Link>
-      </li>
-   
-    </ul>
-  </nav>
-  )
+    <Navbar bg="light" expand="lg">
+      <Navbar.Brand href="/">Admin</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+         
+          <Nav.Link href="/AllUsers">Users List</Nav.Link>
+          <Nav.Link href="/productsList">Products List</Nav.Link>
+          <Nav.Link href="/ordersList">Orders List</Nav.Link>
+          <Nav.Link href="/Signin">Login</Nav.Link>
+       
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  );
 }
 
-export default Navigator
+export default Navigator;
