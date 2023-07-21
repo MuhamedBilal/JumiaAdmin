@@ -73,6 +73,7 @@ function ProductsList() {
 
   const handleDelete = async (id) => {
     try {
+       await axiosInstance.delete(`/products/${id}`);
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
       console.log(users);
       toast.success('User deleted successfully!');
