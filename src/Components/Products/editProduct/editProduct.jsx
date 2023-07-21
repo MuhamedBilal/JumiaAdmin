@@ -178,7 +178,7 @@ function EditProduct() {
                           <ErrorMessage name="seller" component="div" className="text-danger" />
                         </div> */}
 
-                        <button type="submit" className=" btn btn-primary my-2">
+                        <button type="submit" className=" btn btn-primary my-2" disabled={!myformik.dirty}>
                           submit
                         </button>
                       </form>

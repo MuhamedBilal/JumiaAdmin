@@ -27,15 +27,19 @@ export default function UserPage() {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-        .min(8, 'Name must be at least 8 characters')
-        .required('Name is required'),
+        .min(8, 'Name must be at least 8 characters'),
+        // .required('Name is required'),
     email: Yup.string()
         .email('Invalid email address')
-        .required('Email is required'),
+        // .required('Email is required'),
 });
 
 
   const handleSubmit = async (values) => {
+    if (values.name === user.name && values.email === user.email) {
+      toast.info('No changes detected'); // Show info message
+      return;
+    }
     try {
       await axiosInstance.put(`/users/${id}`, values);
       console.log(values); // log the updated form values
@@ -92,7 +96,7 @@ export default function UserPage() {
                           <ErrorMessage name="email" component="div" className="text-danger" />
                         </div>
 
-                        <button type="submit" className=" btn btn-success my-2">
+                        <button type="submit" className=" btn btn-primary my-2" disabled={!myformik.dirty}>
                           submit
                         </button>
                       </form>

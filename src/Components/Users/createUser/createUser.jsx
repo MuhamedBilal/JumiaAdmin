@@ -117,7 +117,7 @@ function CreateUser() {
                           <ErrorMessage name="passwordConfirm" component="div" className="text-danger" />
                         </div>
 
-                        <Button  variant="primary" type="submit" className=" btn mt-3 my-2">
+                        <Button  variant="primary" type="submit" className=" btn mt-3 my-2" disabled={!myformik.dirty}>
                           Submit
                         </Button>
                       </form>

@@ -212,7 +212,7 @@ export default function AddProduct() {
 
                             </select>
 
-                        <button type="submit" className=" btn btn-primary my-2">
+                        <button type="submit" className=" btn btn-primary my-2" disabled={!myformik.dirty}>
                           Submit
                         </button>
                       </form>
