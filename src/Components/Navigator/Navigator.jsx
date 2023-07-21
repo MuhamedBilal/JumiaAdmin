@@ -15,6 +15,9 @@ function Navigator() {
       <li>
         <Link to="/productsList">productsList</Link>
       </li>
+      <li>
+        <Link to="/ordersList">ordersList</Link>
+      </li>
    
     </ul>
   </nav>

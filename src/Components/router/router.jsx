@@ -9,6 +9,7 @@ import CreateUser from "../Users/createUser/createUser";
 import AddProduct from "../Products/AddProduct/AddProduct"
 import ProductsList from "../Products/productsList/productsList"
 import EditProduct from "../Products/editProduct/editProduct"
+import OrdersList from "../Orders/ordersList/ordersList"
 
 function RouterApp() {
   return (
@@ -22,6 +23,7 @@ function RouterApp() {
         <Route path="/addProduct" element={<AddProduct />} />
         <Route path="/productsList" element={<ProductsList/>} />
         <Route path="/editProduct/:id" element={<EditProduct/>} />
+        <Route path="/ordersList" element={<OrdersList/>} />
       </Routes>
     </Router>
   );
