@@ -6,6 +6,7 @@ import { Formik, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import axiosInstance from "../../axios/axios";
 import { useNavigate } from "react-router-dom";
+import {  toast } from 'react-toastify';
 
 
 export default function AddProduct() {
@@ -70,7 +71,7 @@ export default function AddProduct() {
       setProduct(Product);
       console.log(Product); // log the updated user object
       navigate(`/productslist`);
-      
+      toast.success('Product added successfully!'); // Show success message
       // Handle successful update
     } catch (error) {
       // Handle error

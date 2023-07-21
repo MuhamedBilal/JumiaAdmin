@@ -4,6 +4,7 @@ import { Formik, Field, ErrorMessage } from "formik";
 import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import axiosInstance from "../../axios/axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function UserPage() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ export default function UserPage() {
       setUser(updatedUser);
       console.log(updatedUser); // log the updated user object
       navigate(`/allUsers`);
+      toast.success('User edited successfully!'); // Show success message
       // Handle successful update
     } catch (error) {
       // Handle error

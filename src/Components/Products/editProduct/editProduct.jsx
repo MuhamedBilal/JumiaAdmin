@@ -4,6 +4,7 @@ import { Formik, Field, ErrorMessage } from "formik";
 import { useNavigate, useParams } from 'react-router-dom';
 // import * as Yup from 'yup';
 import axiosInstance from "../../axios/axios";
+import {  toast } from 'react-toastify';
 
 
 function EditProduct() {
@@ -35,6 +36,7 @@ function EditProduct() {
       setUser(updatedUser);
       console.log(updatedUser); // log the updated user object
       navigate(`/productsList`);
+      toast.success('Product edited successfully!'); // Show success message
       // Handle successful update
     } catch (error) {
       // Handle error

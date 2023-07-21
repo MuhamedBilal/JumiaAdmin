@@ -7,7 +7,7 @@ import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import axiosInstance from "../../axios/axios";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -50,6 +50,7 @@ function CreateUser() {
       setUser(User);
       console.log(User); // log the updated user object
       navigate(`/allUsers`);
+      toast.success('User added successfully!'); // Show success message
       // Handle successful update
     } catch (error) {
       // Handle error
