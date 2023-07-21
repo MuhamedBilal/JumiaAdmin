@@ -127,7 +127,28 @@ function EditProduct() {
                           />
                           <ErrorMessage name="priceAfterDiscount" component="div" className="text-danger" />
                         </div>
-                        {/* <div className="form-group">
+                      
+
+                        <button type="submit" className=" btn btn-primary my-2" disabled={!myformik.dirty}>
+                          submit
+                        </button>
+                      </form>
+                    )}
+                  </Formik>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default EditProduct
+
+
+  {/* <div className="form-group">
                           <label className="py-2" htmlFor="email">Sold</label>
                           <Field
                             name="sold"
@@ -137,7 +158,7 @@ function EditProduct() {
                           />
                           <ErrorMessage name="sold" component="div" className="text-danger" />
                         </div> */}
-                        <div className="form-group">
+                        {/* <div className="form-group">
                           <label className="py-2" htmlFor="email">Category</label>
                           <Field
                             name="category"
@@ -166,7 +187,7 @@ function EditProduct() {
                             placeholder="Brand"
                           />
                           <ErrorMessage name="brand" component="div" className="text-danger" />
-                        </div>
+                        </div> */}
                         {/* <div className="form-group">
                           <label className="py-2" htmlFor="email">Seller</label>
                           <Field
@@ -177,21 +198,3 @@ function EditProduct() {
                           />
                           <ErrorMessage name="seller" component="div" className="text-danger" />
                         </div> */}
-
-                        <button type="submit" className=" btn btn-primary my-2" disabled={!myformik.dirty}>
-                          submit
-                        </button>
-                      </form>
-                    )}
-                  </Formik>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
-export default EditProduct
